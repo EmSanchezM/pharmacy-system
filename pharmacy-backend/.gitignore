@@ -13,6 +13,15 @@ lerna-debug.log*
 #env variables
 .env
 
+#migrations
+ormconfig.json
+
+#database data
+/postgres_data
+
+#docker
+docker-compose.yml
+
 # OS
 .DS_Store
 
