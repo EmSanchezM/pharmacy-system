@@ -48,7 +48,7 @@ export class CategoryService {
     return plainToClass(ReadCategoryDto, updatedCategory);
   }
   
-  async delete(categoryId): Promise<void>{
+  async delete(categoryId: number): Promise<void>{
     const categoryExists = await this._categoryReposity.findOne(categoryId, {
         where: { status: 'ACTIVE' },
     });
