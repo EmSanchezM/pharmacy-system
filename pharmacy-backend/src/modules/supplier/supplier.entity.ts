@@ -35,10 +35,10 @@ export class Supplier extends BaseEntity {
     @Column({ type: 'varchar', default: 'ACTIVE', length: 8 })
     status: string;
 
-    @Column({ type: 'timestamp', name: 'created_at'})
+    @Column({ type: 'timestamp', name: 'created_at', default: 'now()'})
     createdAt:  Date;
 
-    @Column({ type: 'timestamp', name: 'updated_at'})
+    @Column({ type: 'timestamp', name: 'updated_at', default: 'now()'})
     updatedAt: Date; 
 }
 

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { Supplier } from '../supplier/supplier.entity';
 
@@ -26,20 +26,21 @@ export class Product extends BaseEntity {
     @Column({ type: 'date', nullable:true, name: 'expiration_date'})
     expirationDate: Date;
 
-    @OneToOne(type=> Category, { cascade: true, nullable: false, eager: true})
-    @JoinColumn()
+    @ManyToOne(type=> Category, category=> category.products)
+    @JoinColumn({ name: 'category_id'})
     category: Category;
 
     @ManyToOne(type=> Supplier, supplier => supplier.products)
+    @JoinColumn({ name: 'supplier_id'})
     supplier: Supplier;
 
     @Column({ type: 'varchar', default: 'ACTIVE', length: 8 })
     status: string;
 
-    @Column({ type: 'timestamp', name: 'created_at'})
+    @Column({ type: 'timestamp', name: 'created_at', default: 'now()'})
     createdAt:  Date;
 
-    @Column({ type: 'timestamp', name: 'updated_at'})
+    @Column({ type: 'timestamp', name: 'updated_at', default: 'now()'})
     updatedAt: Date; 
 }
 
