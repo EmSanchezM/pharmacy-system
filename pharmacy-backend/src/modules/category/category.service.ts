@@ -1,13 +1,14 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { plainToClass } from 'class-transformer';
 import { Category } from './category.entity';
-import { CategoryReposity } from './category.reposity';
 import { CreateCategoryDto, ReadCategoryDto } from './dtos';
 
 @Injectable()
 export class CategoryService {
-  constructor(@InjectRepository(CategoryReposity) private readonly _categoryReposity: CategoryReposity){}
+  constructor(@InjectRepository(Category) private readonly _categoryReposity: Repository<Category>){}
   
   async findAll(): Promise<ReadCategoryDto[]>{
     const categories = await this._categoryReposity.find({

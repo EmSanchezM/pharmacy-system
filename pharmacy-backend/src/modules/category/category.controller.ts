@@ -18,19 +18,19 @@ export class CategoryController {
         return categories;
     }
 
-    @Post('create')
+    @Post()
     async createCategory(@Body() category: CreateCategoryDto) : Promise<ReadCategoryDto>{
         const createdCategory = this._categoryService.create(category);
         return createdCategory;
     }
 
-    @Put('update')
+    @Put(':id')
     async updateCategory(@Param() id:number, @Body() category: CreateCategoryDto) : Promise<ReadCategoryDto>{
         const updatedCategory = await this._categoryService.update(id, category);
         return updatedCategory;
     }
 
-    @Delete('delete')
+    @Delete(':id')
     async deleteCategory(@Param() id:number){
         await this._categoryService.delete(id);
         return true;
