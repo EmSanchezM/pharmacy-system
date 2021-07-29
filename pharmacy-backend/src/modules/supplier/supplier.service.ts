@@ -46,7 +46,6 @@ export class SupplierService {
     
       async update(supplierId: number, supplier: CreateSupplierDto): Promise<ReadSupplierDto>{
         const updatedCategory = await this._supplierReposity.update(supplierId, supplier); 
-    
         return plainToClass(ReadSupplierDto, updatedCategory);
       }
       
