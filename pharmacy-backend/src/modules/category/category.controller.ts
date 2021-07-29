@@ -25,13 +25,13 @@ export class CategoryController {
     }
 
     @Put(':id')
-    async updateCategory(@Param() id:number, @Body() category: CreateCategoryDto) : Promise<ReadCategoryDto>{
+    async updateCategory(@Param('id') id:number, @Body() category: CreateCategoryDto) : Promise<ReadCategoryDto>{
         const updatedCategory = await this._categoryService.update(id, category);
         return updatedCategory;
     }
 
     @Delete(':id')
-    async deleteCategory(@Param() id:number){
+    async deleteCategory(@Param('id') id:number){
         await this._categoryService.delete(id);
         return true;
     }
