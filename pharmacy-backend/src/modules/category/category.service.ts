@@ -5,10 +5,14 @@ import { Repository } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { Category } from './category.entity';
 import { CreateCategoryDto, ReadCategoryDto } from './dtos';
+import { CategoryRepository } from './category.repository';
 
 @Injectable()
 export class CategoryService {
-  constructor(@InjectRepository(Category) private readonly _categoryReposity: Repository<Category>){}
+  constructor(
+    @InjectRepository(CategoryRepository) 
+    private readonly _categoryReposity: CategoryRepository
+  ){}
   
   async findAll(): Promise<ReadCategoryDto[]>{
     const categories = await this._categoryReposity.find({
@@ -44,9 +48,17 @@ export class CategoryService {
   }
 
   async update(categoryId: number, category: CreateCategoryDto): Promise<ReadCategoryDto>{
-    const updatedCategory = await this._categoryReposity.update(categoryId, category); 
+    const foundCategory = await this._categoryReposity.findOne(categoryId, {
+      where: { status: 'ACTIVE'}
+    })
+    
+    if(!foundCategory){
+      throw new NotFoundException('Category does not exists');
+    }
 
-    return plainToClass(ReadCategoryDto, updatedCategory);
+    await this._categoryReposity.update(categoryId, category); 
+
+    return plainToClass(ReadCategoryDto, foundCategory);
   }
   
   async delete(categoryId: number): Promise<void>{

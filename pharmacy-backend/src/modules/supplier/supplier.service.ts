@@ -1,15 +1,18 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { Repository } from 'typeorm';
 
 import { CreateSupplierDto, ReadSupplierDto } from './dtos';
 
 import { Supplier } from './supplier.entity';
+import { SupplierRepository } from './supplier.reposity';
 
 @Injectable()
 export class SupplierService {
-    constructor(@InjectRepository(Supplier) private readonly _supplierReposity: Repository<Supplier>){}
+    constructor(
+      @InjectRepository(SupplierRepository) 
+      private readonly _supplierReposity: SupplierRepository
+    ){}
 
     async findAll(): Promise<ReadSupplierDto[]>{
         const suppliers = await this._supplierReposity.find({
