@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -10,33 +14,35 @@ import { CategoryRepository } from './category.repository';
 @Injectable()
 export class CategoryService {
   constructor(
-    @InjectRepository(CategoryRepository) 
-    private readonly _categoryReposity: CategoryRepository
-  ){}
-  
-  async findAll(): Promise<ReadCategoryDto[]>{
+    @InjectRepository(CategoryRepository)
+    private readonly _categoryReposity: CategoryRepository,
+  ) {}
+
+  async findAll(): Promise<ReadCategoryDto[]> {
     const categories = await this._categoryReposity.find({
-        where: { status: 'ACTIVE'},
+      where: { status: 'ACTIVE' },
     });
 
-    if(!categories){
-        throw new NotFoundException();
+    if (!categories) {
+      throw new NotFoundException();
     }
 
-    return categories.map(category => plainToClass(ReadCategoryDto, category))
+    return categories.map((category) =>
+      plainToClass(ReadCategoryDto, category),
+    );
   }
 
-  async findOne(categoryId: number): Promise<ReadCategoryDto>{
-    if(!categoryId){
-        throw new BadRequestException('category id must be sent');
+  async findOne(categoryId: number): Promise<ReadCategoryDto> {
+    if (!categoryId) {
+      throw new BadRequestException('category id must be sent');
     }
 
-    const category = await this._categoryReposity.findOne(categoryId, { 
-        where: {status: 'ACTIVE'}, 
+    const category = await this._categoryReposity.findOne(categoryId, {
+      where: { status: 'ACTIVE' },
     });
 
-    if(!category){
-        throw new NotFoundException();  
+    if (!category) {
+      throw new NotFoundException();
     }
     return plainToClass(ReadCategoryDto, category);
   }
@@ -47,29 +53,32 @@ export class CategoryService {
     return plainToClass(ReadCategoryDto, createCategory);
   }
 
-  async update(categoryId: number, category: CreateCategoryDto): Promise<ReadCategoryDto>{
+  async update(
+    categoryId: number,
+    category: CreateCategoryDto,
+  ): Promise<ReadCategoryDto> {
     const foundCategory = await this._categoryReposity.findOne(categoryId, {
-      where: { status: 'ACTIVE'}
-    })
-    
-    if(!foundCategory){
+      where: { status: 'ACTIVE' },
+    });
+
+    if (!foundCategory) {
       throw new NotFoundException('Category does not exists');
     }
 
-    await this._categoryReposity.update(categoryId, category); 
+    await this._categoryReposity.update(categoryId, category);
 
     return plainToClass(ReadCategoryDto, foundCategory);
   }
-  
-  async delete(categoryId: number): Promise<void>{
+
+  async delete(categoryId: number): Promise<void> {
     const categoryExists = await this._categoryReposity.findOne(categoryId, {
-        where: { status: 'ACTIVE' },
+      where: { status: 'ACTIVE' },
     });
-    
-    if(!categoryExists){
-        throw new NotFoundException();
+
+    if (!categoryExists) {
+      throw new NotFoundException();
     }
 
-    await this._categoryReposity.update(categoryId, { status: 'INACTIVE' })
+    await this._categoryReposity.update(categoryId, { status: 'INACTIVE' });
   }
 }

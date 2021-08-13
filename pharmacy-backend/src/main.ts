@@ -11,7 +11,7 @@ async function bootstrap() {
     .setDescription('Pharmacy control system')
     .setVersion('1.0.0')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 

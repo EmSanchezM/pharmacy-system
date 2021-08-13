@@ -8,6 +8,6 @@ import { SupplierRepository } from './supplier.reposity';
 @Module({
   imports: [TypeOrmModule.forFeature([SupplierRepository])],
   providers: [SupplierService],
-  controllers: [SupplierController]
+  controllers: [SupplierController],
 })
 export class SupplierModule {}

@@ -10,14 +10,20 @@ import { ProductModule } from './modules/product/product.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, CategoryModule, ProductModule, SupplierModule],
+  imports: [
+    ConfigModule,
+    DatabaseModule,
+    CategoryModule,
+    ProductModule,
+    SupplierModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
   static port: number | string;
 
-  constructor(private readonly _configService: ConfigServices){
-    AppModule.port = this._configService.get(Configuration.PORT)
+  constructor(private readonly _configService: ConfigServices) {
+    AppModule.port = this._configService.get(Configuration.PORT);
   }
 }

@@ -6,8 +6,8 @@ import { CategoryController } from './category.controller';
 import { CategoryRepository } from './category.repository';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([CategoryRepository])],
-    providers: [CategoryService],
-    controllers: [CategoryController]
+  imports: [TypeOrmModule.forFeature([CategoryRepository])],
+  providers: [CategoryService],
+  controllers: [CategoryController],
 })
 export class CategoryModule {}
