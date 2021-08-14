@@ -12,7 +12,7 @@ import { CreateProductDto } from './dtos/create-product.dto';
 import { ReadProductDto } from './dtos/read-product.dto';
 import { ProductService } from './product.service';
 
-@Controller('product')
+@Controller('products')
 @ApiTags('Product')
 export class ProductController {
   constructor(private readonly _productService: ProductService) {}
@@ -27,7 +27,7 @@ export class ProductController {
     status: 200,
     description: 'Show a product',
   })
-  async findOneProduct(@Param() id: number): Promise<ReadProductDto> {
+  async findOneProduct(@Param('id') id: number): Promise<ReadProductDto> {
     const product = await this._productService.findOne(id);
     return product;
   }

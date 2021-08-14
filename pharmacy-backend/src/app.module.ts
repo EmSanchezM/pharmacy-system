@@ -8,6 +8,8 @@ import { DatabaseModule } from './database/database.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
+import { LaboratoryModule } from './modules/laboratory/laboratory.module';
+import { MedicineModule } from './modules/medicine/medicine.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { SupplierModule } from './modules/supplier/supplier.module';
     CategoryModule,
     ProductModule,
     SupplierModule,
+    LaboratoryModule,
+    MedicineModule,
   ],
   controllers: [AppController],
   providers: [AppService],

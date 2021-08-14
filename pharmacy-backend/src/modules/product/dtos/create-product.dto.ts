@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import {IsDate, IsNumber, IsString} from 'class-validator';
 
 @Exclude()
 export class CreateProductDto {
@@ -41,4 +41,12 @@ export class CreateProductDto {
   @Expose()
   @ApiProperty({ type: Number, description: 'Supplier Id of the product' })
   supplier: number;
+
+  @IsDate()
+  @Expose()
+  @ApiProperty({
+    type: Date,
+    description: 'Expiration date of the product',
+  })
+  expirationDate: Date;
 }

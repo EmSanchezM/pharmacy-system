@@ -4,12 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { CategoryRepository } from './category.repository';
 
 import { plainToClass } from 'class-transformer';
-import { Category } from './category.entity';
+
 import { CreateCategoryDto, ReadCategoryDto } from './dtos';
-import { CategoryRepository } from './category.repository';
 
 @Injectable()
 export class CategoryService {
@@ -58,7 +57,7 @@ export class CategoryService {
     category: CreateCategoryDto,
   ): Promise<ReadCategoryDto> {
     const foundCategory = await this._categoryReposity.findOne(categoryId, {
-      where: { status: 'ACTIVE' },
+      //where: { status: 'ACTIVE' },
     });
 
     if (!foundCategory) {

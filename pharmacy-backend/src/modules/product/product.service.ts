@@ -27,7 +27,7 @@ export class ProductService {
 
   async findAll(): Promise<ReadProductDto[]> {
     const products: Product[] = await this._productReposity.find({
-      relations: ['categories', 'suppliers'],
+      relations: ['category', 'supplier'],
       where: { status: 'ACTIVE' },
     });
 
@@ -43,12 +43,12 @@ export class ProductService {
       throw new BadRequestException('product id must be sent');
     }
     const product: Product = await this._productReposity.findOne(productId, {
-      relations: ['categories', 'suppliers'],
+      relations: ['category', 'supplier'],
       where: { status: 'ACTIVE' },
     });
 
     if (!product) {
-      throw new NotFoundException();
+      throw new NotFoundException('Product does not exits');
     }
     return plainToClass(ReadProductDto, product);
   }
@@ -92,11 +92,13 @@ export class ProductService {
     productId: number,
     product: UpdateProductDto,
   ): Promise<ReadProductDto> {
-    const foundProduct = await this._productReposity.findOne(productId, {
-      where: { status: 'ACTIVE' },
-    });
+    const foundProduct = await this._productReposity.findOne(productId);
 
     if (!foundProduct) {
+      throw new NotFoundException('Product does not exist');
+    }
+
+    if (foundProduct.status === 'INACTIVE') {
       throw new NotFoundException('Product does not exist');
     }
 
