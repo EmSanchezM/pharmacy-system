@@ -98,10 +98,6 @@ export class ProductService {
       throw new NotFoundException('Product does not exist');
     }
 
-    if (foundProduct.status === 'INACTIVE') {
-      throw new NotFoundException('Product does not exist');
-    }
-
     this._productReposity.merge(foundProduct, product);
     await this._productReposity.save(foundProduct);
 
