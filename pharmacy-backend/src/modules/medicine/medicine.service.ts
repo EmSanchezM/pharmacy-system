@@ -2,22 +2,19 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 
-import { CategoryService } from '../category/category.service';
-import { SupplierService } from '../supplier/supplier.service';
-
-import { Product } from '../product/product.entity';
-import { ProductRepository } from '../product/product.reposity';
-
 import { CreateMedicineDto } from './dtos/create-medicine.dto';
 import { ReadMedicineDto } from './dtos/read-medicine.dto';
+import { UpdateMedicineDto } from './dtos/update-medicine.dto';
 
 import { Medicine } from './medicine.entity';
 import { MedicineRepository } from './medicine.repository';
 import { LaboratoryRepository } from '../laboratory/laboratory.repository';
-import { UpdateMedicineDto } from './dtos/update-medicine.dto';
+import { Product } from '../product/product.entity';
+import { ProductRepository } from '../product/product.reposity';
 import { Category } from '../category/category.entity';
 import { CategoryRepository } from '../category/category.repository';
 import { SupplierRepository } from '../supplier/supplier.reposity';
+import { Connection } from 'typeorm';
 
 @Injectable()
 export class MedicineService {
@@ -27,7 +24,8 @@ export class MedicineService {
         private readonly _productRepository: ProductRepository,
         private readonly _laboratoryRepository: LaboratoryRepository,
         private readonly _categoryRepository: CategoryRepository,
-        private readonly _supplierRepository: SupplierRepository
+        private readonly _supplierRepository: SupplierRepository,
+        private connection: Connection
     ){}
 
     async findAll(): Promise<ReadMedicineDto[]> {
@@ -58,48 +56,62 @@ export class MedicineService {
         return plainToClass(ReadMedicineDto, medicine);
       }
     
-      async create(medicine: CreateMedicineDto): Promise<ReadMedicineDto> {
+      async create(medicineBody: CreateMedicineDto): Promise<ReadMedicineDto> {
         
-        const categoryExist: Category = await this._categoryRepository.findOne(medicine.category)
+        const categoryExist: Category = await this._categoryRepository.findOne(medicineBody.category)
 
         if(!categoryExist){
             throw new NotFoundException('Category does not exits');
         }
 
-        const supplierExist = await this._supplierRepository.findOne(medicine.supplier)
+        const supplierExist = await this._supplierRepository.findOne(medicineBody.supplier)
 
         if(!supplierExist){
             throw new NotFoundException('Suplier does not exits');
         }
-        
-        const product = new Product();
-        product.name = medicine.nameMedicine;
-        product.description = medicine.description;
-        product.quantityPerUnit = medicine.quantityPerUnit;
-        product.unitPrice = medicine.unitPrice;
-        product.unitsInStock = medicine.unitsInStock;
-        product.expirationDate = medicine.expirationDate;
-        product.category = categoryExist;
-        product.supplier = supplierExist;
 
-        const newProduct = await this._productRepository.save(product);
-        console.log('new ', newProduct)
-        const laboratory = await this._laboratoryRepository.findOne(medicine.laboratory)
+        const laboratory = await this._laboratoryRepository.findOne(medicineBody.laboratory)
 
         if(!laboratory){
-            throw new NotFoundException('Laboratory does not exits');
+          throw new NotFoundException('Laboratory does not exits');
         }
 
-        const createMedicine: Medicine = await this._medicineRepository.save({
-          indications: medicine.indications,
-          actions: medicine.actions,
-          dose: medicine.dose,
-          administrationRoute: medicine.administrationRoute,
-          product: newProduct,
-          laboratory  
-        });
-    
-        return plainToClass(ReadMedicineDto, createMedicine);
+        const queryRunner = this.connection.createQueryRunner();
+
+        try {
+          await queryRunner.connect();
+          await queryRunner.startTransaction();
+
+          const product = new Product();
+          product.name = medicineBody.nameMedicine;
+          product.description = medicineBody.description;
+          product.quantityPerUnit = medicineBody.quantityPerUnit;
+          product.unitPrice = medicineBody.unitPrice;
+          product.unitsInStock = medicineBody.unitsInStock;
+          product.expirationDate = medicineBody.expirationDate;
+          product.category = categoryExist;
+          product.supplier = supplierExist;
+
+          const newProduct = await queryRunner.manager.save(product);
+
+          const medicine = new Medicine();
+          medicine.indications = medicineBody.indications;
+          medicine.dose = medicineBody.dose;
+          medicine.administrationRoute = medicineBody.administrationRoute;
+          medicine.product = newProduct;
+          medicine.laboratory = laboratory;
+
+          await queryRunner.manager.save(medicine);
+          await queryRunner.commitTransaction();
+          
+          return plainToClass(ReadMedicineDto, medicine);
+
+        } catch (error) {
+          await queryRunner.rollbackTransaction();
+          throw new BadRequestException();
+        } finally {
+          await queryRunner.release();
+        }
       }
     
       async update(
