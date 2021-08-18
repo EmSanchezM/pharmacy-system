@@ -35,10 +35,10 @@ export class UpdateProductDto {
   @IsNumber()
   @Expose()
   @ApiProperty({ type: Number, description: 'Category Id of the product' })
-  category?: number;
+  category_id?: number;
 
   @IsNumber()
   @Expose()
   @ApiProperty({ type: Number, description: 'Supplier Id of the product' })
-  supplier?: number;
+  supplier_id?: number;
 }

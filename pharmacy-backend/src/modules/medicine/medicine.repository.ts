@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { Laboratory } from "../laboratory/laboratory.entity";
+import { Medicine } from "./medicine.entity";
 
-@EntityRepository(Laboratory)
-export class LaboratoryRepository extends Repository<Laboratory>{}
+@EntityRepository(Medicine)
+export class MedicineRepository extends Repository<Medicine>{}

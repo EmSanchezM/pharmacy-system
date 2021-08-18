@@ -98,8 +98,9 @@ export class ProductService {
       throw new NotFoundException('Product does not exist');
     }
 
-    this._productReposity.merge(foundProduct, product);
-    await this._productReposity.save(foundProduct);
+    //this._productReposity.merge(foundProduct, product);
+    //await this._productReposity.save(foundProduct);
+    await this._productReposity.update(productId, product);
 
     return plainToClass(ReadProductDto, foundProduct);
   }
@@ -110,7 +111,7 @@ export class ProductService {
     });
 
     if (!productExist) {
-      throw new NotFoundException();
+      throw new NotFoundException('Product does not exist');
     }
     await this._productReposity.update(productId, {
       status: 'INACTIVE',
