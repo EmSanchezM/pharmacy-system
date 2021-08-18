@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose } from "class-transformer";
-import { IsNumber, IsString } from "class-validator";
+import { IsDate, IsNumber, IsString } from "class-validator";
 
 @Exclude()
 export class CreateMedicineDto {
@@ -29,6 +29,14 @@ export class CreateMedicineDto {
     @Expose()
     @ApiProperty({ type: Number, description: 'Units in stock of the medicine'})
     unitsInStock:number;
+
+    @IsDate()
+    @Expose()
+    @ApiProperty({
+        type: Date,
+        description: 'Expiration date of the product',
+    })
+    expirationDate: Date;
 
     @IsNumber()
     @Expose()

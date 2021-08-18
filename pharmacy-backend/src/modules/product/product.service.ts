@@ -32,7 +32,7 @@ export class ProductService {
     });
 
     if (!products) {
-      throw new NotFoundException();
+      throw new NotFoundException('Products does not exits');
     }
 
     return products.map((product) => plainToClass(ReadProductDto, product));
@@ -102,7 +102,11 @@ export class ProductService {
     //await this._productReposity.save(foundProduct);
     await this._productReposity.update(productId, product);
 
-    return plainToClass(ReadProductDto, foundProduct);
+    const updatedProduct = await this._productReposity.findOne(productId, 
+      {relations: ['category', 'supplier']}
+    );
+
+    return plainToClass(ReadProductDto, updatedProduct);
   }
 
   async delete(productId: number): Promise<void> {

@@ -18,5 +18,6 @@ import { SupplierRepository } from '../supplier/supplier.reposity';
   ],
   providers: [ProductService],
   controllers: [ProductController],
+  exports: [ProductService]
 })
 export class ProductModule {}

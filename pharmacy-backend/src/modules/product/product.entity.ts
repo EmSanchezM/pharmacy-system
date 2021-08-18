@@ -23,7 +23,7 @@ export class Product extends BaseEntity {
   @Column({ type: 'int', nullable: false, name: 'quantity_per_unit' })
   quantityPerUnit: number;
 
-  @Column({ type: 'decimal', nullable: false, name: 'unit_price' })
+  @Column({ type: 'int', nullable: false, name: 'unit_price' })
   unitPrice: number;
 
   @Column({ type: 'int', nullable: false, name: 'units_in_stock' })
@@ -34,11 +34,11 @@ export class Product extends BaseEntity {
 
   @ManyToOne((type) => Category, (category) => category.products)
   @JoinColumn({ name: 'category_id' })
-  category: Category | number;
+  category: Category;
 
   @ManyToOne((type) => Supplier, (supplier) => supplier.products)
   @JoinColumn({ name: 'supplier_id' })
-  supplier: Supplier | number;
+  supplier: Supplier;
 
   @Column({ type: 'varchar', default: 'ACTIVE', length: 8 })
   status: string;
