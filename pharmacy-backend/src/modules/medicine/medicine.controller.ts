@@ -8,9 +8,9 @@ import { MedicineService } from './medicine.service';
 @Controller('medicine')
 @ApiTags('Medicine')
 export class MedicineController {
-    constructor(private readonly _medicineService: MedicineService){}
+  constructor(private readonly _medicineService: MedicineService) { }
 
-    @Get(':id')
+  @Get(':id')
   @ApiParam({
     type: Number,
     name: 'id',

@@ -8,10 +8,11 @@ import { ReadMedicineDto } from './dtos/read-medicine.dto';
 import { UpdateMedicineDto } from './dtos/update-medicine.dto';
 
 import { Medicine } from './medicine.entity';
-import { MedicineRepository } from './medicine.repository';
-import { LaboratoryRepository } from '../laboratory/laboratory.repository';
 import { Product } from '../product/product.entity';
 import { Category } from '../category/category.entity';
+
+import { MedicineRepository } from './medicine.repository';
+import { LaboratoryRepository } from '../laboratory/laboratory.repository';
 import { CategoryRepository } from '../category/category.repository';
 import { SupplierRepository } from '../supplier/supplier.reposity';
 
