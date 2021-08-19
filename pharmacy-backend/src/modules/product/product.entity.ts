@@ -23,7 +23,7 @@ export class Product extends BaseEntity {
   @Column({ type: 'int', nullable: false, name: 'quantity_per_unit' })
   quantityPerUnit: number;
 
-  @Column({ type: 'int', nullable: false, name: 'unit_price' })
+  @Column({ type: 'decimal', nullable: false, name: 'unit_price', precision: 10, scale: 2 })
   unitPrice: number;
 
   @Column({ type: 'int', nullable: false, name: 'units_in_stock' })
