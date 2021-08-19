@@ -11,6 +11,7 @@ import { ProductRepository } from '../product/product.reposity';
 import { LaboratoryRepository } from '../laboratory/laboratory.repository';
 import { CategoryRepository } from '../category/category.repository';
 import { SupplierRepository } from '../supplier/supplier.reposity';
+import { ShelfRepository } from '../branch-office/shelf.repository';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { SupplierRepository } from '../supplier/supplier.reposity';
       ProductRepository, 
       LaboratoryRepository,
       CategoryRepository,
-      SupplierRepository
+      SupplierRepository,
+      ShelfRepository
     ]),
     ProductModule,
     CategoryModule,

@@ -3,7 +3,7 @@ import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLaboratoryDto, ReadLaboratoryDto } from './dtos';
 import { LaboratoryService } from './laboratory.service';
 
-@Controller('laboratory')
+@Controller('laboratories')
 @ApiTags('Laboratory')
 export class LaboratoryController {
     constructor(private readonly _laboratoryService: LaboratoryService) { }

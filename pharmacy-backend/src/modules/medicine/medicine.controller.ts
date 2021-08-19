@@ -5,7 +5,7 @@ import { ReadMedicineDto } from './dtos/read-medicine.dto';
 import { UpdateMedicineDto } from './dtos/update-medicine.dto';
 import { MedicineService } from './medicine.service';
 
-@Controller('medicine')
+@Controller('medicines')
 @ApiTags('Medicine')
 export class MedicineController {
   constructor(private readonly _medicineService: MedicineService) { }

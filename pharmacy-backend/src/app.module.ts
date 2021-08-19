@@ -10,6 +10,7 @@ import { ProductModule } from './modules/product/product.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
 import { LaboratoryModule } from './modules/laboratory/laboratory.module';
 import { MedicineModule } from './modules/medicine/medicine.module';
+import { BranchOfficeModule } from './modules/branch-office/branch-office.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MedicineModule } from './modules/medicine/medicine.module';
     SupplierModule,
     LaboratoryModule,
     MedicineModule,
+    BranchOfficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

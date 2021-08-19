@@ -15,6 +15,8 @@ import { MedicineRepository } from './medicine.repository';
 import { LaboratoryRepository } from '../laboratory/laboratory.repository';
 import { CategoryRepository } from '../category/category.repository';
 import { SupplierRepository } from '../supplier/supplier.reposity';
+import { ShelfRepository } from '../branch-office/shelf.repository';
+import { ShelfMedicine } from './shelf-medicine.entity';
 
 @Injectable()
 export class MedicineService {
@@ -24,6 +26,7 @@ export class MedicineService {
     private readonly _laboratoryRepository: LaboratoryRepository,
     private readonly _categoryRepository: CategoryRepository,
     private readonly _supplierRepository: SupplierRepository,
+    private readonly _shelfRepository: ShelfRepository,
     private connection: Connection
   ) { }
 
@@ -75,6 +78,12 @@ export class MedicineService {
       throw new NotFoundException('Laboratory does not exits');
     }
 
+    const shelf = await this._shelfRepository.findOne(medicineBody.shelf)
+
+    if (!shelf) {
+      throw new NotFoundException('Shelf does not exits');
+    }
+
     const queryRunner = this.connection.createQueryRunner();
 
     try {
@@ -100,10 +109,18 @@ export class MedicineService {
       medicine.product = newProduct;
       medicine.laboratory = laboratory;
 
-      await queryRunner.manager.save(medicine);
+      const newMedicine = await queryRunner.manager.save(medicine);
+
+      const shelfMedicine = new ShelfMedicine();
+      shelfMedicine.medicine = newMedicine;
+      shelfMedicine.shelf = shelf;
+      shelfMedicine.cubicle = medicineBody.cubicle;
+
+      await queryRunner.manager.save(shelfMedicine);
+
       await queryRunner.commitTransaction();
 
-      return plainToClass(ReadMedicineDto, medicine);
+      return plainToClass(ReadMedicineDto, newMedicine);
 
     } catch (error) {
       await queryRunner.rollbackTransaction();

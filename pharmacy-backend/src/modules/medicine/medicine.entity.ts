@@ -1,6 +1,8 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Shelf } from "../branch-office/shelf.entity";
 import { Laboratory } from "../laboratory/laboratory.entity";
 import { Product } from "../product/product.entity";
+import { ShelfMedicine } from "./shelf-medicine.entity";
 
 @Entity('medicines')
 export class Medicine extends BaseEntity {
@@ -27,6 +29,9 @@ export class Medicine extends BaseEntity {
     @JoinColumn({name: 'laboratory_id'})
     laboratory: Laboratory;
 
+    @OneToMany(type=> ShelfMedicine, (shelfMedicine)=> shelfMedicine.medicine)
+    shelf: ShelfMedicine;
+    
     @Column({ type: 'varchar', default: 'ACTIVE', length: 8 })
     status: string;
 
