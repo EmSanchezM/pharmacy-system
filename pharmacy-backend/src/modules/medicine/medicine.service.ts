@@ -124,7 +124,7 @@ export class MedicineService {
 
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new BadRequestException();
+      throw new BadRequestException('ERROR ROLLBACK');
     } finally {
       await queryRunner.release();
     }

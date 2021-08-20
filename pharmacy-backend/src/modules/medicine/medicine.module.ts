@@ -12,6 +12,7 @@ import { LaboratoryRepository } from '../laboratory/laboratory.repository';
 import { CategoryRepository } from '../category/category.repository';
 import { SupplierRepository } from '../supplier/supplier.reposity';
 import { ShelfRepository } from '../branch-office/shelf.repository';
+import { ShelfMedicineRepository } from './shelf-medicine.repository';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { ShelfRepository } from '../branch-office/shelf.repository';
       LaboratoryRepository,
       CategoryRepository,
       SupplierRepository,
-      ShelfRepository
+      ShelfRepository,
+      ShelfMedicineRepository,
     ]),
     ProductModule,
     CategoryModule,
