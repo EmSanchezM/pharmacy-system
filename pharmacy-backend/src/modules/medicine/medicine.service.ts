@@ -104,6 +104,7 @@ export class MedicineService {
 
       const medicine = new Medicine();
       medicine.indications = medicineBody.indications;
+      medicine.actions = medicineBody.actions;
       medicine.dose = medicineBody.dose;
       medicine.administrationRoute = medicineBody.administrationRoute;
       medicine.product = newProduct;
@@ -124,7 +125,7 @@ export class MedicineService {
 
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new BadRequestException('ERROR ROLLBACK');
+      throw new BadRequestException('ERROR ', error);
     } finally {
       await queryRunner.release();
     }

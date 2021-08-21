@@ -9,16 +9,16 @@ export class Medicine extends BaseEntity {
     @PrimaryGeneratedColumn('increment')
     id:number;
 
-    @Column({ type: 'varchar', length:255, nullable: false })
+    @Column({ type: 'text', nullable: false })
     indications: string;
 
-    @Column({ type: 'varchar', length:255 })
+    @Column({ type: 'text' })
     actions: string;
 
-    @Column({ type:'varchar', length: 255 })
+    @Column({ type:'text' })
     dose:string;
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'text' })
     administrationRoute: string;
 
     @OneToOne(type=> Product)

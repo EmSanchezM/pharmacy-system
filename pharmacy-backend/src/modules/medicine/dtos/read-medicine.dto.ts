@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose, Type } from "class-transformer";
 import { IsNumber, IsString } from "class-validator";
+import { ReadShelfDto } from "src/modules/branch-office/dtos/read-shelf.dto";
 import { ReadLaboratoryDto } from "src/modules/laboratory/dtos";
 import { ReadProductDto } from "src/modules/product/dtos/read-product.dto";
 
@@ -54,6 +55,11 @@ export class ReadMedicineDto {
     @Expose()
     @ApiProperty({ type: Number, description: 'Details of medicine' })
     @Type(type => ReadProductDto)
-    readonly details: ReadProductDto;
+    readonly product: ReadProductDto;
+
+    @Expose()
+    @ApiProperty({ type: Number, description: 'Shelf of medicine' })
+    @Type(type => ReadShelfDto)
+    readonly shelf: ReadShelfDto;
 
 }
